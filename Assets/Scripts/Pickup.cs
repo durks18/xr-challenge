@@ -8,8 +8,6 @@ public class Pickup : MonoBehaviour
 	private int scoreValue;
 	public int ScoreValue => scoreValue;
 
-	public float generate = 0f;
-
 	[Header("References")]
 	[SerializeField]
 	private PickupAnimator animator;
