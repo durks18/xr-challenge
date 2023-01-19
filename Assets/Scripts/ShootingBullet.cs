@@ -9,6 +9,7 @@ public class ShootingBullet : MonoBehaviour
     public Transform spawnPoint;
     public GameObject Bullet;
     public float speed = 5f;
+    public float force = 10f;
 
 
     void start()
@@ -21,6 +22,15 @@ public class ShootingBullet : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             ShootBullet();
+            RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                if (hit.transform.CompareTag("Block"))
+                {
+                    BreakableBlocks blockHealth = hit.transform.GetComponent<BreakableBlocks>();
+                    if (blockHealth != null) blockHealth.TakeDamage(1);
+                }
+            }
         }
     }
     
@@ -30,5 +40,7 @@ public class ShootingBullet : MonoBehaviour
         Rigidbody rig = cB.GetComponent<Rigidbody>();
 
         rig.AddForce(spawnPoint.forward * speed, ForceMode.Impulse);
+
     }
+
 }
