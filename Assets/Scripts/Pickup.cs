@@ -8,8 +8,6 @@ public class Pickup : MonoBehaviour
 	private int scoreValue;
 	public int ScoreValue => scoreValue;
 
-	public float generate = 0f;
-
 	[Header("References")]
 	[SerializeField]
 	private PickupAnimator animator;
@@ -43,6 +41,7 @@ public class Pickup : MonoBehaviour
 	/// <returns>The score. Return -1 if failed to collect.</returns>
 	public int GetPickedUp()
 	{
+
 		if (IsCollected) return -1;
 
 		HandlePickedUp();
