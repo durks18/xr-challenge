@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public int score;
     public Canvas endGameCanvas;
 
+    public int playerHealth = 10;
+
     public void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag("Pickup"))
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerHealth = 10;  
     }
 
     // Update is called once per frame
@@ -49,5 +51,15 @@ public class Player : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
   
+    }
+
+    public void TakeDamage(int damage)
+    {
+        playerHealth -= damage;
+        if (playerHealth <= 0 ) 
+        {
+            Destroy(gameObject);
+            EndGame();
+        }
     }
 }

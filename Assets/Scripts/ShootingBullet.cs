@@ -9,7 +9,7 @@ public class ShootingBullet : MonoBehaviour
     public Transform spawnPoint;
     public GameObject Bullet;
     public float speed = 5f;
-    public float force = 10f;
+    public float force = 1f;
 
 
     void start()
@@ -30,6 +30,11 @@ public class ShootingBullet : MonoBehaviour
                     BreakableBlocks blockHealth = hit.transform.GetComponent<BreakableBlocks>();
                     if (blockHealth != null) blockHealth.TakeDamage(1);
                 }
+                if (hit.transform.CompareTag("Enemy"))
+                {
+                    EnemyAI enemyHealth = hit.transform.GetComponent<EnemyAI>();
+                    if (enemyHealth != null) enemyHealth.TakeDamage(1);
+                }
             }
         }
     }
@@ -42,5 +47,12 @@ public class ShootingBullet : MonoBehaviour
         rig.AddForce(spawnPoint.forward * speed, ForceMode.Impulse);
 
     }
+    /*
+                    if (hit.transform.CompareTag("Player"))
+                {
+                    Player playerHealth = hit.transform.GetComponent<Player>();
+                    if (playerHealth != null) playerHealth.TakeDamage(1);
+                }
+    */
 
 }
