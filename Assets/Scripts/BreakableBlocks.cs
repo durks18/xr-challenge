@@ -5,19 +5,30 @@ using UnityEngine;
 public class BreakableBlocks : MonoBehaviour
 {
     public int maxHealth = 3;
-    int currentHealth;
+    public int currentHealth;
+
+    [SerializeField]
+    private AudioClip soundClip;
+
 
     private void Start()
     {
         currentHealth = maxHealth;
     }
+    
 
-    public void TakeDamage(int damage)
+    private void OnTriggerEnter(Collider collision)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        if (collision.CompareTag("Bullet"))
         {
-            Destroy(gameObject);
+            Destroy(collision.gameObject);
+
+            currentHealth--;
+
+            if (currentHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
