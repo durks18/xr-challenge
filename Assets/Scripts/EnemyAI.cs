@@ -4,14 +4,11 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     public GameObject Player;
-    public GameObject Bullet;
-    public float fireRange = 10f;
-    public float fireRate = 10f;
     public NavMeshAgent navMeshAgent;  // Nav Mesh Agent component
     public float startWaitTime = 4;    // wait time of each action
     public float timeToRotate = 2;     // wait time when the enemy detect near the player without seeing
     public float speedWalk = 6;        // enemy walking speed
-    public float speedRun = 9;         // enemy running speed
+    public float speedRun = 10;         // enemy running speed
 
     public float viewRadius = 15;      // radius of the enemy view
     public float viewAngle = 90;       // Angle of the enemy view 
@@ -20,8 +17,9 @@ public class EnemyAI : MonoBehaviour
     public float meshResolution = 1f;  // how many Rays will be cast per degree 
     public int edgeIterations = 4;     // number of iterations to get a better performance of the mesh filter when the Raycast hit an obstacle
     public float edgeDistance = 0.5f;  // max distance to calculate the minimum and maximum Raycast when it hits something
-    public int maxHealth = 5;
-    int currentHealth;
+    public int maxHealth = 1; // enemies max health
+    public int currentHealth; // enemy's current health
+    public Player playerHealth; //reference to the player health
 
     public Transform[] waypoints;      // all the way points the enemy patrols
     int m_CurrentWayPointIndex;        // current waypoint the enemy is patroling
@@ -53,7 +51,7 @@ public class EnemyAI : MonoBehaviour
         navMeshAgent.speed = speedWalk;  // set the navmesh speed with the normal speed of the enemy
         navMeshAgent.SetDestination(waypoints[m_CurrentWayPointIndex].position); // set the destination of the first waypoint
 
-        currentHealth = maxHealth;
+        currentHealth = 5;
 
     }
 
@@ -69,14 +67,7 @@ public class EnemyAI : MonoBehaviour
         {
             Patroling();
         }
-
-
-        // check if the player is in the enemys range
-        if (Vector3.Distance(transform.position, Player.transform.position) <= fireRange)
-        {
-             EnemyBullet enemyBullet = GetComponent<EnemyBullet>();
-             enemyBullet.ShootBullet();
-        }
+        
     }
 
     private void Chasing()
@@ -104,7 +95,7 @@ public class EnemyAI : MonoBehaviour
             }
             else
             {
-                if(Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position)>= 2.5f)
+                if(Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position)>= 1f)
                 {
 
                     // wait if the current position is not the player position
@@ -192,7 +183,6 @@ public class EnemyAI : MonoBehaviour
     {
         m_CaughtPlayer = true;
 
-
     }
 
     void LookingPlayer(Vector3 player)
@@ -258,13 +248,20 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    private void OnTriggerEnter(Collider collision)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        if (collision.CompareTag("Bullet"))
         {
-            Destroy(gameObject);
+            Destroy(collision.gameObject);
+
+            currentHealth--;
+
+            if (currentHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
+
     }
 }
 

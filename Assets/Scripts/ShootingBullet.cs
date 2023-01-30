@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ShootingBullet : MonoBehaviour
 {
-    public float timeToDestroy = 2f;
+    public float timeToDestroy = 1f;
     public Transform spawnPoint;
     public GameObject Bullet;
     public float speed = 5f;
     public float force = 1f;
+    public float delayInSeconds;
+    public EnemyAI enemyHealth;
+    public BreakableBlocks blockHealth;
 
 
     void start()
@@ -22,23 +26,10 @@ public class ShootingBullet : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             ShootBullet();
-            RaycastHit hit;
-                if (Physics.Raycast(transform.position, transform.forward, out hit))
-            {
-                if (hit.transform.CompareTag("Block"))
-                {
-                    BreakableBlocks blockHealth = hit.transform.GetComponent<BreakableBlocks>();
-                    if (blockHealth != null) blockHealth.TakeDamage(1);
-                }
-                if (hit.transform.CompareTag("Enemy"))
-                {
-                    EnemyAI enemyHealth = hit.transform.GetComponent<EnemyAI>();
-                    if (enemyHealth != null) enemyHealth.TakeDamage(1);
-                }
-            }
+            
         }
     }
-    
+
     private void ShootBullet()
     {
         GameObject cB=Instantiate(Bullet, spawnPoint.position, Bullet.transform.rotation);
@@ -47,12 +38,5 @@ public class ShootingBullet : MonoBehaviour
         rig.AddForce(spawnPoint.forward * speed, ForceMode.Impulse);
 
     }
-    /*
-                    if (hit.transform.CompareTag("Player"))
-                {
-                    Player playerHealth = hit.transform.GetComponent<Player>();
-                    if (playerHealth != null) playerHealth.TakeDamage(1);
-                }
-    */
 
 }

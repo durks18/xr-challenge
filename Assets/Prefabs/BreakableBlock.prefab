@@ -111,3 +111,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  currentHealth: 0
+  soundClip: {fileID: 8300000, guid: 81f9beaf352faff4c8c1961e1cb83114, type: 3}
